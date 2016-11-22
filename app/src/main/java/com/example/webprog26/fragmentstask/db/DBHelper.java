@@ -26,7 +26,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL("create table (" + TABLE_ARTICLES + "("
+        sqLiteDatabase.execSQL("create table " + TABLE_ARTICLES + "("
         + ARTICLE_ID + " integer primary key autoincrement, "
         + ARTICLE_TITLE + " varchar(100), "
         + ARTICLE_TEXT + " text)");

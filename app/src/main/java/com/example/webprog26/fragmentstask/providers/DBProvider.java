@@ -3,6 +3,7 @@ package com.example.webprog26.fragmentstask.providers;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.util.Log;
 
 import com.example.webprog26.fragmentstask.db.DBHelper;
 import com.example.webprog26.fragmentstask.models.Article;
@@ -15,7 +16,8 @@ import java.util.ArrayList;
 
 public class DBProvider {
 
-    private Activity mActivity;
+    private static final String TAG = "DBProvider";
+
     private DBHelper mDbHelper;
 
     public DBProvider(Activity activity) {
@@ -76,5 +78,23 @@ public class DBProvider {
         }
         cursor.close();
         return builder.build();
+    }
+
+    public long updateArticle(Article article){
+        String strFilter = DBHelper.ARTICLE_ID + " = " + String.valueOf(article.getArticleId());
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(DBHelper.ARTICLE_TITLE, article.getArticleTitle());
+        contentValues.put(DBHelper.ARTICLE_TEXT, article.getArticleText());
+
+        Log.i(TAG, "ID + " + article.getArticleId() + " Title = " + article.getArticleTitle() + ", text = " + article.getArticleText());
+
+        return mDbHelper.getWritableDatabase().update(DBHelper.TABLE_ARTICLES, contentValues, strFilter, null);
+    }
+
+    public void deleteArticleById(long articleId){
+        String whereClause = DBHelper.ARTICLE_ID + " = ?";
+        String[] whereArgs = new String[]{String.valueOf(articleId)};
+        mDbHelper.getWritableDatabase().delete(DBHelper.TABLE_ARTICLES, whereClause, whereArgs);
     }
 }
