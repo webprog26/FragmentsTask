@@ -15,11 +15,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.webprog26.fragmentstask.R;
+import com.example.webprog26.fragmentstask.interfaces.ItemDeletingListener;
 import com.example.webprog26.fragmentstask.interfaces.ItemTouchHelperViewHolder;
 import com.example.webprog26.fragmentstask.interfaces.OnArticleDeletedListener;
 import com.example.webprog26.fragmentstask.interfaces.OnArticleListClickListener;
 import com.example.webprog26.fragmentstask.models.Article;
 import com.example.webprog26.fragmentstask.threads.ArticleDeleteThread;
+import com.example.webprog26.fragmentstask.threads.ArticleUpdateThread;
 
 import java.util.Collections;
 import java.util.List;
@@ -28,7 +30,7 @@ import java.util.List;
  * Created by webprog26 on 22.11.2016.
  */
 
-public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.ArticlesViewHolder> {
+public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.ArticlesViewHolder> implements ItemDeletingListener {
 
     private static final String TAG = "ArticlesAdapter";
 
@@ -71,6 +73,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.Articl
     private RelativeLayout mListContainer;
     private Activity mActivity;
     private Drawable mDefaultDrawable;
+    private boolean isItemDeleted = false;
 
     public ArticlesAdapter(Activity activity, List<Article> mArticleList, OnArticleListClickListener mListener, RelativeLayout listContainer) {
         this.mActivity = activity;
@@ -122,6 +125,8 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.Articl
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                isItemDeleted = true;
+                Log.i(TAG, "isItemDeleted swiped " + isItemDeleted);
                 final int adapterPosition = viewHolder.getAdapterPosition();
                 final Article article = mArticleList.get(adapterPosition);
 
@@ -131,16 +136,30 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.Articl
                     public void onClick(View view) {
                         mArticleList.add(adapterPosition, article);
                         notifyItemInserted(adapterPosition);
+                        isItemDeleted = false;
+                        Log.i(TAG, "isItemDeleted canceled " + isItemDeleted);
                     }
                 }).setActionTextColor(Color.RED);
                 snackbar.show();
-                new ArticleDeleteThread(mActivity, article, new OnArticleDeletedListener() {
+                snackbar.setCallback(new Snackbar.Callback() {
+                    /**
+                     * Called when the given {@link Snackbar} has been dismissed, either through a time-out,
+                     * having been manually dismissed, or an action being clicked.
+                     *
+                     * @param snackbar The snackbar which has been dismissed.
+                     * @param event    The event which caused the dismissal. One of either:
+                     *                 {@link #DISMISS_EVENT_SWIPE}, {@link #DISMISS_EVENT_ACTION},
+                     *                 {@link #DISMISS_EVENT_TIMEOUT}, {@link #DISMISS_EVENT_MANUAL} or
+                     *                 {@link #DISMISS_EVENT_CONSECUTIVE}.
+                     * @see Snackbar#dismiss()
+                     */
                     @Override
-                    public void onArticleDeleted(Article article) {
-                        mArticleList.remove(article);
-                        notifyItemRemoved(adapterPosition);
+                    public void onDismissed(Snackbar snackbar, int event) {
+                        super.onDismissed(snackbar, event);
+                        deleteItem(isItemDeleted, article, adapterPosition);
                     }
-                }).start();
+                });
+
             }
 
             @Override
@@ -193,4 +212,17 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.Articl
         return true;
     }
 
+    @Override
+    public void deleteItem(boolean isDeleted, Article article, final int adapterPosition) {
+        Log.i(TAG, "isDeleted in method " + isDeleted);
+        if(isDeleted){
+            new ArticleDeleteThread(mActivity, article, new OnArticleDeletedListener() {
+                @Override
+                public void onArticleDeleted(Article article) {
+                    mArticleList.remove(article);
+                    notifyItemRemoved(adapterPosition);
+                }
+            }).start();
+        }
+    }
 }

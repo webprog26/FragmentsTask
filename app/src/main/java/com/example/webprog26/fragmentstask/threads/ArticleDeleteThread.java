@@ -1,6 +1,7 @@
 package com.example.webprog26.fragmentstask.threads;
 
 import android.app.Activity;
+import android.util.Log;
 
 import com.example.webprog26.fragmentstask.interfaces.OnArticleDeletedListener;
 import com.example.webprog26.fragmentstask.models.Article;
@@ -11,6 +12,8 @@ import com.example.webprog26.fragmentstask.providers.DBProvider;
  */
 
 public class ArticleDeleteThread extends Thread {
+
+    private static final String TAG = "ArticleDeleteThread";
 
     private DBProvider mDbProvider;
     private Article mArticle;
@@ -32,6 +35,7 @@ public class ArticleDeleteThread extends Thread {
     }
 
     private void deleteArticle(){
+        Log.i(TAG, "Deleting article with Id: " + mArticle.getArticleId());
         mDbProvider.deleteArticleById(mArticle.getArticleId());
         mOnArticleDeletedListener.onArticleDeleted(mArticle);
     }
