@@ -16,7 +16,7 @@ public class EditorActivity extends SingleFragmentActivity implements OnArticleR
 
     @Override
     protected Fragment createFragment() {
-        return new FragmentEditor();
+        return FragmentEditor.newInstance(getIntent().getLongExtra(FragmentEditor.ARTICLE_ID, FragmentEditor.NEW_ARTICLE));
     }
 
     @Override

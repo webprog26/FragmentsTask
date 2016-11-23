@@ -96,6 +96,13 @@ public class FragmentList extends Fragment implements OnArticleListClickListener
         }
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        //Nulling reference, previosly saved in onAttach() to avoid possible memory leaks
+        this.mOnArticleToEditListener = null;
+    }
+
     private class AsyncTitlesLoadingTask extends AsyncTask<Void, Void, List<Article>>{
 
         @Override

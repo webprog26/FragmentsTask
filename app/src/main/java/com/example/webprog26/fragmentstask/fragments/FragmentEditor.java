@@ -28,9 +28,25 @@ public class FragmentEditor extends Fragment{
 
     private EditText mEtArticleTitle, mEtArticleText;
     private OnArticleReadyToStoreListener mArticleReadyToStoreListener;
+    private long mArticleId;
 
     public static final String ARTICLE_ID = "com.example.webprog26.fragmentstask.article_id";
     public static final long NEW_ARTICLE = 0;
+
+    public static FragmentEditor newInstance(long articleId){
+        Bundle bundle = new Bundle();
+        FragmentEditor fragmentEditor = new FragmentEditor();
+        bundle.putLong(ARTICLE_ID, articleId);
+        fragmentEditor.setArguments(bundle);
+
+        return fragmentEditor;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        this.mArticleId = getArguments().getLong(ARTICLE_ID, NEW_ARTICLE);
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -52,11 +68,10 @@ public class FragmentEditor extends Fragment{
         mEtArticleTitle = (EditText) view.findViewById(R.id.etTitle);
         mEtArticleText = (EditText) view.findViewById(R.id.etText);
 
-        final long articleId = getActivity().getIntent().getLongExtra(ARTICLE_ID, NEW_ARTICLE);
-        Log.i(TAG, "Article id " + articleId);
+        Log.i(TAG, "Article id " + mArticleId);
 
-        if(articleId != NEW_ARTICLE){
-            new SingleArticleAsyncLoadingTask().executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, articleId);
+        if(mArticleId != NEW_ARTICLE){
+            new SingleArticleAsyncLoadingTask().executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, mArticleId);
         }
 
         Button btnSaveArticle = (Button) view.findViewById(R.id.btnSave);
@@ -67,7 +82,7 @@ public class FragmentEditor extends Fragment{
                 if(!areTextFieldsNotEmpty(mEtArticleTitle, mEtArticleText)) return;
 
                 Article.Builder builder = Article.newBuilder();
-                builder.setArticleId(articleId)
+                builder.setArticleId(mArticleId)
                         .setArticleTitle(mEtArticleTitle.getText().toString())
                         .setArticleText(mEtArticleText.getText().toString());
 
@@ -81,6 +96,12 @@ public class FragmentEditor extends Fragment{
         btnCancel.setOnClickListener(new ButtonOnClickHandler(getActivity()));
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        //Nulling reference, previosly saved in onAttach() to avoid possible memory leaks
+        this.mArticleReadyToStoreListener = null;
+    }
 
     private boolean areTextFieldsNotEmpty(EditText firstField, EditText secondField){
         return firstField.length() > 0 && secondField.length() > 0;
