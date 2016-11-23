@@ -2,7 +2,9 @@ package com.example.webprog26.fragmentstask.adapters;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
@@ -32,11 +34,17 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.Articl
 
     public class ArticlesViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder{
 
+        @SuppressWarnings("deprecation")
         @Override
-        public void onItemSelected() {}
+        public void onItemSelected() {
+            mDefaultDrawable = itemView.getBackground();
+            itemView.findViewById(R.id.cardView).setBackground(mActivity.getResources().getDrawable(R.drawable.selected_item));
+        }
 
         @Override
-        public void onItemClear() {}
+        public void onItemClear() {
+            itemView.findViewById(R.id.cardView).setBackground(mDefaultDrawable);
+        }
 
         private TextView mTvArticleTitle;
 
@@ -62,6 +70,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.Articl
     private OnArticleListClickListener mListener;
     private RelativeLayout mListContainer;
     private Activity mActivity;
+    private Drawable mDefaultDrawable;
 
     public ArticlesAdapter(Activity activity, List<Article> mArticleList, OnArticleListClickListener mListener, RelativeLayout listContainer) {
         this.mActivity = activity;
@@ -159,7 +168,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.Articl
             @Override
             public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
                 super.clearView(recyclerView, viewHolder);
-                viewHolder.itemView.setAlpha(1.0F);
+//                viewHolder.itemView.setAlpha(1.0F);
                 if (viewHolder instanceof ItemTouchHelperViewHolder) {
                     ItemTouchHelperViewHolder itemTouchHelperViewHolder = (ItemTouchHelperViewHolder) viewHolder;
                     itemTouchHelperViewHolder.onItemClear();

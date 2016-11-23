@@ -26,10 +26,13 @@ public class EditorActivity extends SingleFragmentActivity implements OnArticleR
 
     @Override
     public void onArticleReady(Article article) {
-        Log.i(TAG, "article.getArticleId(): " + article.getArticleId());
         if(article.getArticleId() == FragmentEditor.NEW_ARTICLE){
+            //Since articleId matches FragmentEditor.NEW_ARTICLE
+            //we store this article as a new one using separate java.lang.Thread
             new ArticleStoringThread(article, this).start();
         } else {
+            //Since articleId matches some article, that already exists
+            //in the database, we're editing this article java.lang.Thread
             new ArticleUpdateThread(this, article).start();
         }
     }

@@ -29,12 +29,13 @@ public class ButtonOnClickHandler implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btnAddArticle:
-                Log.i(TAG, "btnAddArticle clicked");
+                //Calling EditorActivity from MainActivity to open FragmentEditor
                 Intent intent = new Intent(mActivity, EditorActivity.class);
                 intent.putExtra(FragmentEditor.ARTICLE_ID, FragmentEditor.NEW_ARTICLE);
                 mActivity.startActivity(intent);
                 break;
             case R.id.btnCancel:
+                //Finishing EditorActivity. Returning to Main Activity
                 mActivity.finish();
                 break;
         }

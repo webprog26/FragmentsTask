@@ -16,14 +16,7 @@ public class MainActivity extends SingleFragmentActivity implements OnArticleToE
     private static final String TAG = "MainActivity_TAG";
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        Log.i(TAG, "onStart(): " + MainActivity.this.getClass().getSimpleName());
-    }
-
-    @Override
     protected Fragment createFragment() {
-        Log.i(TAG, "createFragment(): " + MainActivity.this.getClass().getSimpleName());
         return new FragmentList();
     }
 

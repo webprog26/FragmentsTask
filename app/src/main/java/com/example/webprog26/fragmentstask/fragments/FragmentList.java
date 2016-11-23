@@ -45,7 +45,6 @@ public class FragmentList extends Fragment implements OnArticleListClickListener
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mArticles = new ArrayList<>();
-        Log.i(TAG, "onCreate() " + FragmentList.this.getClass().getSimpleName());
     }
 
     @Override
@@ -59,15 +58,15 @@ public class FragmentList extends Fragment implements OnArticleListClickListener
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG, "onResume() " + FragmentList.this.getClass().getSimpleName() + ", " + mArticles.size());
+        //In this moment of Fragment's lifecycle we're loading list of Articles
+        //to show it's titles in A RecyclerView via ArticlesAdapter
         new AsyncTitlesLoadingTask().executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_list, container, false);
-        return view;
+        return inflater.inflate(R.layout.fragment_list, container, false);
     }
 
     @Override
@@ -82,6 +81,7 @@ public class FragmentList extends Fragment implements OnArticleListClickListener
         mArticlesRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mArticlesRecyclerView.setHasFixedSize(true);
         mArticlesRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
         FloatingActionButton btnAdArticle = (FloatingActionButton) view.findViewById(R.id.btnAddArticle);
         btnAdArticle.setOnClickListener(new ButtonOnClickHandler(getActivity()));
         Log.i(TAG, "onViewCreated " + FragmentList.this.getClass().getSimpleName());
@@ -103,6 +103,8 @@ public class FragmentList extends Fragment implements OnArticleListClickListener
         this.mOnArticleToEditListener = null;
     }
 
+    //This class loads existing Articles from database asynchronously & transfers it
+    //to ArticlesAdapter
     private class AsyncTitlesLoadingTask extends AsyncTask<Void, Void, List<Article>>{
 
         @Override
@@ -115,9 +117,6 @@ public class FragmentList extends Fragment implements OnArticleListClickListener
         protected void onPostExecute(List<Article> articles) {
             super.onPostExecute(articles);
             mArticles = articles;
-            for(Article article: articles){
-                Log.i(TAG, "ID: " + article.getArticleId() + ", title: " + article.getArticleTitle() + ", text: " + article.getArticleText());
-            }
             mAdapter.updateList(mArticles);
         }
     }

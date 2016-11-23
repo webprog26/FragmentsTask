@@ -30,6 +30,7 @@ public class FragmentEditor extends Fragment{
     private OnArticleReadyToStoreListener mArticleReadyToStoreListener;
     private long mArticleId;
 
+    //Constants to transfer articleId while creating or editing Article via Bundle
     public static final String ARTICLE_ID = "com.example.webprog26.fragmentstask.article_id";
     public static final long NEW_ARTICLE = 0;
 
@@ -68,8 +69,6 @@ public class FragmentEditor extends Fragment{
         mEtArticleTitle = (EditText) view.findViewById(R.id.etTitle);
         mEtArticleText = (EditText) view.findViewById(R.id.etText);
 
-        Log.i(TAG, "Article id " + mArticleId);
-
         if(mArticleId != NEW_ARTICLE){
             new SingleArticleAsyncLoadingTask().executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, mArticleId);
         }
@@ -103,10 +102,18 @@ public class FragmentEditor extends Fragment{
         this.mArticleReadyToStoreListener = null;
     }
 
+    /**
+     * Checks that {@link EditText} fields aren't empty
+     * @param firstField {@link EditText}
+     * @param secondField {@link EditText}
+     * @return boolean
+     */
     private boolean areTextFieldsNotEmpty(EditText firstField, EditText secondField){
         return firstField.length() > 0 && secondField.length() > 0;
     }
 
+    //This class loads editable Article title & text from data base asynchronously
+    //& places values to EditText fields
     private class SingleArticleAsyncLoadingTask extends AsyncTask<Long, Void, Article>{
 
         @Override
