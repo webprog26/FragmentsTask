@@ -34,6 +34,9 @@ public class ArticleDeleteThread extends Thread {
         }
     }
 
+    /**
+     * Deletes {@link Article} in database via {@link DBProvider} method deleteArticleById(long articleId)
+     */
     private void deleteArticle(){
         Log.i(TAG, "Deleting article with Id: " + mArticle.getArticleId());
         mDbProvider.deleteArticleById(mArticle.getArticleId());

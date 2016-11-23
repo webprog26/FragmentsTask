@@ -14,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-
 import com.example.webprog26.fragmentstask.R;
 import com.example.webprog26.fragmentstask.adapters.ArticlesAdapter;
 import com.example.webprog26.fragmentstask.click_handlers.ButtonOnClickHandler;
@@ -22,7 +21,6 @@ import com.example.webprog26.fragmentstask.interfaces.OnArticleListClickListener
 import com.example.webprog26.fragmentstask.interfaces.OnArticleToEditListener;
 import com.example.webprog26.fragmentstask.models.Article;
 import com.example.webprog26.fragmentstask.providers.DBProvider;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,7 +82,6 @@ public class FragmentList extends Fragment implements OnArticleListClickListener
 
         FloatingActionButton btnAdArticle = (FloatingActionButton) view.findViewById(R.id.btnAddArticle);
         btnAdArticle.setOnClickListener(new ButtonOnClickHandler(getActivity()));
-        Log.i(TAG, "onViewCreated " + FragmentList.this.getClass().getSimpleName());
 
         mArticlesRecyclerView.setAdapter(mAdapter);
     }
@@ -92,6 +89,7 @@ public class FragmentList extends Fragment implements OnArticleListClickListener
     @Override
     public void onArticleListClick(Article article) {
         if(mOnArticleToEditListener != null){
+            Log.i(TAG, "Article " + article.getArticleId() + " " + article.getArticleTitle() + " " + article.getArticleText());
             mOnArticleToEditListener.onEditArticle(article);
         }
     }
@@ -99,7 +97,7 @@ public class FragmentList extends Fragment implements OnArticleListClickListener
     @Override
     public void onDetach() {
         super.onDetach();
-        //Nulling reference, previosly saved in onAttach() to avoid possible memory leaks
+        //Nulling reference, previously saved in onAttach() to avoid possible memory leaks
         this.mOnArticleToEditListener = null;
     }
 
@@ -119,5 +117,9 @@ public class FragmentList extends Fragment implements OnArticleListClickListener
             mArticles = articles;
             mAdapter.updateList(mArticles);
         }
+    }
+
+    public void updateUI(){
+        new AsyncTitlesLoadingTask().executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 }

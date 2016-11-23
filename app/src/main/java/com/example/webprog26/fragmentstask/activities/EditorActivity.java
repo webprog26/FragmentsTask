@@ -1,7 +1,6 @@
 package com.example.webprog26.fragmentstask.activities;
 
 import android.support.v4.app.Fragment;
-import android.util.Log;
 
 import com.example.webprog26.fragmentstask.R;
 import com.example.webprog26.fragmentstask.fragments.FragmentEditor;
@@ -35,6 +34,7 @@ public class EditorActivity extends SingleFragmentActivity implements OnArticleR
             //in the database, we're editing this article java.lang.Thread
             new ArticleUpdateThread(this, article).start();
         }
+        finish();
     }
 }
 

@@ -31,6 +31,9 @@ public class ArticleUpdateThread extends Thread {
         }
     }
 
+    /**
+     * Updates existing {@link Article} in database via {@link DBProvider} method updateArticle(Article article)
+     */
     private void updateArticle(){
         Log.i(TAG, "text: " + mArticle.getArticleText());
         mDbProvider.updateArticle(mArticle);

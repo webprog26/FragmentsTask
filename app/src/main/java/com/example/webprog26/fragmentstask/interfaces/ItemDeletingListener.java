@@ -8,5 +8,11 @@ import com.example.webprog26.fragmentstask.models.Article;
 
 public interface ItemDeletingListener {
 
+    /**
+     * Implemented by adapter. Processes with deleting article asynchronously
+     * @param isDeleted boolean
+     * @param article {@link Article}
+     * @param adapterPosition int
+     */
     public void deleteItem(boolean isDeleted, Article article, final int adapterPosition);
 }

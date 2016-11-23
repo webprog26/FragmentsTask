@@ -7,12 +7,12 @@ package com.example.webprog26.fragmentstask.interfaces;
 public interface ItemTouchHelperViewHolder {
 
    /**
-    * Changes background of selected list item to selected
+    * Implemented by adapter's ViewHolder. Changes background of selected list item to selected
     */
    public void onItemSelected();
 
     /**
-     * Changes background of selected list item to unselected
+     * Implemented by adapter's ViewHolder. Changes background of selected list item to unselected
      */
    public void onItemClear();
 }

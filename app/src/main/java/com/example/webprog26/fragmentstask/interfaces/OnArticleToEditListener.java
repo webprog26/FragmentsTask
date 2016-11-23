@@ -8,5 +8,14 @@ import com.example.webprog26.fragmentstask.models.Article;
 
 public interface OnArticleToEditListener {
 
+    /**
+     * Implemented in host (parent) {@link com.example.webprog26.fragmentstask.activities.MainActivity}.
+     * Using is caused by orientation. In portrait orientation (in other words single-panel GUI)
+     * calls {@link com.example.webprog26.fragmentstask.activities.EditorActivity} with article's id
+     * as a parameter, thus {@link com.example.webprog26.fragmentstask.activities.EditorActivity} can
+     * transfer article id to {@link com.example.webprog26.fragmentstask.fragments.FragmentEditor},
+     * which loads editable {@link Article} from database by received id
+     * @param article
+     */
     public void onEditArticle(Article article);
 }

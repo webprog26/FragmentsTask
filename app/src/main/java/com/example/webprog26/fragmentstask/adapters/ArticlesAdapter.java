@@ -4,16 +4,13 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.design.widget.Snackbar;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.example.webprog26.fragmentstask.R;
 import com.example.webprog26.fragmentstask.interfaces.ItemDeletingListener;
 import com.example.webprog26.fragmentstask.interfaces.ItemTouchHelperViewHolder;
@@ -21,8 +18,6 @@ import com.example.webprog26.fragmentstask.interfaces.OnArticleDeletedListener;
 import com.example.webprog26.fragmentstask.interfaces.OnArticleListClickListener;
 import com.example.webprog26.fragmentstask.models.Article;
 import com.example.webprog26.fragmentstask.threads.ArticleDeleteThread;
-import com.example.webprog26.fragmentstask.threads.ArticleUpdateThread;
-
 import java.util.Collections;
 import java.util.List;
 
@@ -126,7 +121,6 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.Articl
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 isItemDeleted = true;
-                Log.i(TAG, "isItemDeleted swiped " + isItemDeleted);
                 final int adapterPosition = viewHolder.getAdapterPosition();
                 final Article article = mArticleList.get(adapterPosition);
 
@@ -137,7 +131,6 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.Articl
                         mArticleList.add(adapterPosition, article);
                         notifyItemInserted(adapterPosition);
                         isItemDeleted = false;
-                        Log.i(TAG, "isItemDeleted canceled " + isItemDeleted);
                     }
                 }).setActionTextColor(Color.RED);
                 snackbar.show();
@@ -214,7 +207,6 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.Articl
 
     @Override
     public void deleteItem(boolean isDeleted, Article article, final int adapterPosition) {
-        Log.i(TAG, "isDeleted in method " + isDeleted);
         if(isDeleted){
             new ArticleDeleteThread(mActivity, article, new OnArticleDeletedListener() {
                 @Override

@@ -8,5 +8,10 @@ import com.example.webprog26.fragmentstask.models.Article;
 
 public interface OnArticleListClickListener {
 
+    /**
+     * Implemented in {@link com.example.webprog26.fragmentstask.fragments.FragmentList},
+     * used in adapter to handle articles list onClick events
+     * @param article {@link Article}
+     */
     public void onArticleListClick(Article article);
 }

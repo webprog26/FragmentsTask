@@ -31,6 +31,9 @@ public class ArticleStoringThread extends Thread {
         super.run();
     }
 
+    /**
+     * Inserts newly-created {@link Article} to database via {@link DBProvider} method insertArticleToDB(Article article)
+     */
     private void storeArticleToDatabase(){
         Log.i(TAG, this.getName() + " writing: " + mArticle.getArticleTitle());
         mDbProvider.insertArticleToDB(mArticle);

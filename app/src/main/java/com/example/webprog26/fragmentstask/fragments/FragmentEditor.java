@@ -5,7 +5,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +13,12 @@ import android.widget.EditText;
 
 import com.example.webprog26.fragmentstask.R;
 import com.example.webprog26.fragmentstask.click_handlers.ButtonOnClickHandler;
+import com.example.webprog26.fragmentstask.interfaces.OnArticleListUpdatedListener;
 import com.example.webprog26.fragmentstask.interfaces.OnArticleReadyToStoreListener;
 import com.example.webprog26.fragmentstask.models.Article;
 import com.example.webprog26.fragmentstask.providers.DBProvider;
+import com.example.webprog26.fragmentstask.threads.ArticleStoringThread;
+import com.example.webprog26.fragmentstask.threads.ArticleUpdateThread;
 
 /**
  * Created by webprog26 on 22.11.2016.
@@ -28,6 +30,7 @@ public class FragmentEditor extends Fragment{
 
     private EditText mEtArticleTitle, mEtArticleText;
     private OnArticleReadyToStoreListener mArticleReadyToStoreListener;
+    private OnArticleListUpdatedListener mOnArticleListUpdatedListener;
     private long mArticleId;
 
     //Constants to transfer articleId while creating or editing Article via Bundle
@@ -54,6 +57,10 @@ public class FragmentEditor extends Fragment{
         super.onAttach(context);
         if(context instanceof OnArticleReadyToStoreListener){
             mArticleReadyToStoreListener = (OnArticleReadyToStoreListener) context;
+        }
+
+        if(context instanceof OnArticleListUpdatedListener){
+            mOnArticleListUpdatedListener = (OnArticleListUpdatedListener) context;
         }
     }
 
@@ -84,22 +91,56 @@ public class FragmentEditor extends Fragment{
                 builder.setArticleId(mArticleId)
                         .setArticleTitle(mEtArticleTitle.getText().toString())
                         .setArticleText(mEtArticleText.getText().toString());
+                final Article article = builder.build();
 
-                if(mArticleReadyToStoreListener != null){
-                    mArticleReadyToStoreListener.onArticleReady(builder.build());
+                if(doesActivityImplementsOnArticleReadyToStoreListener()){
+                    mArticleReadyToStoreListener.onArticleReady(article);
+                } else{
+                    new OnArticleReadyToStoreListener(){
+                        @Override
+                        public void onArticleReady(Article article) {
+                            if(article.getArticleId() == FragmentEditor.NEW_ARTICLE){
+                                //Since articleId matches FragmentEditor.NEW_ARTICLE
+                                //we store this article as a new one using separate java.lang.Thread
+                                new ArticleStoringThread(article, getActivity()).start();
+                            } else {
+                                //Since articleId matches some article, that already exists
+                                //in the database, we're editing this article java.lang.Thread
+                                new ArticleUpdateThread(getActivity(), article).start();
+                            }
+                        }
+                    }.onArticleReady(article);
+                    mOnArticleListUpdatedListener.onArticleListUpdated();
                 }
-                getActivity().finish();
+                mEtArticleTitle.setText("");
+                mEtArticleText.setText("");
             }
         });
         Button btnCancel = (Button) view.findViewById(R.id.btnCancel);
-        btnCancel.setOnClickListener(new ButtonOnClickHandler(getActivity()));
+        if(doesActivityImplementsOnArticleReadyToStoreListener()){
+            btnCancel.setOnClickListener(new ButtonOnClickHandler(getActivity()));
+        } else {
+            btnCancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mEtArticleTitle.setText("");
+                    mEtArticleText.setText("");
+                }
+            });
+        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        //Nulling reference, previosly saved in onAttach() to avoid possible memory leaks
-        this.mArticleReadyToStoreListener = null;
+        //Nulling reference, previously saved in onAttach() to avoid possible memory leaks
+        if(this.mArticleReadyToStoreListener != null){
+            this.mArticleReadyToStoreListener = null;
+        }
+
+        if(this.mOnArticleListUpdatedListener != null){
+            mOnArticleListUpdatedListener = null;
+        }
     }
 
     /**
@@ -128,5 +169,13 @@ public class FragmentEditor extends Fragment{
             mEtArticleTitle.setText(article.getArticleTitle());
             mEtArticleText.setText(article.getArticleText());
         }
+    }
+
+    /**
+     * Checks does host (parent) Activity implements OnArticleReadyToStoreListener
+     * @return boolean
+     */
+    private boolean doesActivityImplementsOnArticleReadyToStoreListener(){
+        return getActivity() instanceof OnArticleReadyToStoreListener;
     }
 }

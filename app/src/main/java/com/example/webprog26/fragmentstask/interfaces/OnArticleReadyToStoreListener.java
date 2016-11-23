@@ -8,5 +8,10 @@ import com.example.webprog26.fragmentstask.models.Article;
 
 public interface OnArticleReadyToStoreListener {
 
+    /**
+     * Implemented by host(parent) {@link com.example.webprog26.fragmentstask.activities.EditorActivity} activity.
+     * Processes with article addition/ edition via separate thread
+     * @param article {@link Article}
+     */
     public void onArticleReady(Article article);
 }

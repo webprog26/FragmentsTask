@@ -3,11 +3,8 @@ package com.example.webprog26.fragmentstask.providers;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.util.Log;
-
 import com.example.webprog26.fragmentstask.db.DBHelper;
 import com.example.webprog26.fragmentstask.models.Article;
-
 import java.util.ArrayList;
 
 /**
@@ -80,6 +77,11 @@ public class DBProvider {
         return builder.build();
     }
 
+    /**
+     * Updates existing Article with new data
+     * @param article {@link Article}
+     * @return long
+     */
     public long updateArticle(Article article){
         String strFilter = DBHelper.ARTICLE_ID + " = " + String.valueOf(article.getArticleId());
 
@@ -87,11 +89,13 @@ public class DBProvider {
         contentValues.put(DBHelper.ARTICLE_TITLE, article.getArticleTitle());
         contentValues.put(DBHelper.ARTICLE_TEXT, article.getArticleText());
 
-        Log.i(TAG, "ID + " + article.getArticleId() + " Title = " + article.getArticleTitle() + ", text = " + article.getArticleText());
-
         return mDbHelper.getWritableDatabase().update(DBHelper.TABLE_ARTICLES, contentValues, strFilter, null);
     }
 
+    /**
+     * Deletes exisitn {@link Article}
+     * @param articleId long
+     */
     public void deleteArticleById(long articleId){
         String whereClause = DBHelper.ARTICLE_ID + " = ?";
         String[] whereArgs = new String[]{String.valueOf(articleId)};

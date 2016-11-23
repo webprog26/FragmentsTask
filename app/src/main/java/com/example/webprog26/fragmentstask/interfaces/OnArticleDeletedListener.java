@@ -8,5 +8,11 @@ import com.example.webprog26.fragmentstask.models.Article;
 
 public interface OnArticleDeletedListener {
 
+    /**
+     * Used in anonymous {@link com.example.webprog26.fragmentstask.threads.ArticleDeleteThread}
+     * in {@link com.example.webprog26.fragmentstask.adapters.ArticlesAdapter}
+     * removes swiped {@link Article} from list, calls notifyItemRemoved() method of adapter
+     * @param article {@link Article}
+     */
     public void onArticleDeleted(Article article);
 }
