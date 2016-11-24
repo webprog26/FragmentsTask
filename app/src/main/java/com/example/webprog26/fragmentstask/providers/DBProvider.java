@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.database.Cursor;
 import com.example.webprog26.fragmentstask.db.DBHelper;
+import com.example.webprog26.fragmentstask.managers.CursorManager;
 import com.example.webprog26.fragmentstask.models.Article;
 import java.util.ArrayList;
 
@@ -44,12 +45,7 @@ public class DBProvider {
         Cursor cursor = mDbHelper.getReadableDatabase().query(DBHelper.TABLE_ARTICLES, null, null, null, null, null, DBHelper.ARTICLE_ID);
 
         while (cursor.moveToNext()){
-            Article.Builder builder = Article.newBuilder();
-                builder.setArticleId(cursor.getLong(cursor.getColumnIndex(DBHelper.ARTICLE_ID)))
-                        .setArticleTitle(cursor.getString(cursor.getColumnIndex(DBHelper.ARTICLE_TITLE)))
-                        .setArticleText(cursor.getString(cursor.getColumnIndex(DBHelper.ARTICLE_TEXT)));
-
-            articlesList.add(builder.build());
+            articlesList.add(CursorManager.getArticleFromDataBase(cursor));
         }
         cursor.close();
         return articlesList;
@@ -61,7 +57,7 @@ public class DBProvider {
      * @return {@link Article}
      */
     public Article getArticleById(long articleId){
-        Article.Builder builder = Article.newBuilder();
+        Article article = new Article();
 
         String selection = DBHelper.ARTICLE_ID + " = ?";
         String[] selectionArgs = new String[]{String.valueOf(articleId)};
@@ -69,12 +65,10 @@ public class DBProvider {
         Cursor cursor = mDbHelper.getReadableDatabase().query(DBHelper.TABLE_ARTICLES, null, selection, selectionArgs, null, null, null);
 
         while (cursor.moveToNext()){
-            builder.setArticleId(articleId)
-                    .setArticleTitle(cursor.getString(cursor.getColumnIndex(DBHelper.ARTICLE_TITLE)))
-                    .setArticleText(cursor.getString(cursor.getColumnIndex(DBHelper.ARTICLE_TEXT)));
+            article = CursorManager.getArticleFromDataBase(cursor);
         }
         cursor.close();
-        return builder.build();
+        return article;
     }
 
     /**
