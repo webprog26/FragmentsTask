@@ -13,5 +13,5 @@ public interface OnArticleListClickListener {
      * used in adapter to handle articles list onClick events
      * @param article {@link Article}
      */
-    public void onArticleListClick(Article article);
+    void onArticleListClick(Article article);
 }

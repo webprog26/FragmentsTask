@@ -14,5 +14,5 @@ public interface OnArticleDeletedListener {
      * removes swiped {@link Article} from list, calls notifyItemRemoved() method of adapter
      * @param article {@link Article}
      */
-    public void onArticleDeleted(Article article);
+    void onArticleDeleted(Article article);
 }

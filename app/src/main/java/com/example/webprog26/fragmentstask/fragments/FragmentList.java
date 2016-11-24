@@ -119,6 +119,9 @@ public class FragmentList extends Fragment implements OnArticleListClickListener
         }
     }
 
+    /**
+     * Updates list of Article in two-panels UI
+     */
     public void updateUI(){
         new AsyncTitlesLoadingTask().executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }

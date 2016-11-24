@@ -17,7 +17,7 @@ public class ArticleUpdateThread extends Thread {
     private DBProvider mDbProvider;
     private Article mArticle;
 
-    public ArticleUpdateThread(Activity activity, Article mArticle) {
+    public ArticleUpdateThread(Article mArticle, Activity activity) {
         this.mDbProvider = new DBProvider(activity);
         this.mArticle = mArticle;
     }

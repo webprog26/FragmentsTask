@@ -32,7 +32,7 @@ public class EditorActivity extends SingleFragmentActivity implements OnArticleR
         } else {
             //Since articleId matches some article, that already exists
             //in the database, we're editing this article java.lang.Thread
-            new ArticleUpdateThread(this, article).start();
+            new ArticleUpdateThread(article, this).start();
         }
         finish();
     }

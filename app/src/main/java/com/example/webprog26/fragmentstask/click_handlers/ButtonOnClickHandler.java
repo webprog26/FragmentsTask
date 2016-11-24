@@ -31,9 +31,6 @@ public class ButtonOnClickHandler implements View.OnClickListener {
         switch (view.getId()){
             case R.id.btnAddArticle:
                 //Calling EditorActivity from MainActivity to open FragmentEditor
-//                Intent intent = new Intent(mActivity, EditorActivity.class);
-//                intent.putExtra(FragmentEditor.ARTICLE_ID, FragmentEditor.NEW_ARTICLE);
-//                mActivity.startActivity(intent);
                 if(mActivity.findViewById(R.id.fragmentEditor) == null){
                     Intent intent = new Intent(mActivity, EditorActivity.class);
                     intent.putExtra(FragmentEditor.ARTICLE_ID, FragmentEditor.NEW_ARTICLE);

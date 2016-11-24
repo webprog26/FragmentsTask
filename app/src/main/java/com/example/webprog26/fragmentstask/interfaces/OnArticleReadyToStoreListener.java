@@ -13,5 +13,5 @@ public interface OnArticleReadyToStoreListener {
      * Processes with article addition/ edition via separate thread
      * @param article {@link Article}
      */
-    public void onArticleReady(Article article);
+    void onArticleReady(Article article);
 }

@@ -106,7 +106,7 @@ public class FragmentEditor extends Fragment{
                             } else {
                                 //Since articleId matches some article, that already exists
                                 //in the database, we're editing this article java.lang.Thread
-                                new ArticleUpdateThread(getActivity(), article).start();
+                                new ArticleUpdateThread(article, getActivity()).start();
                             }
                         }
                     }.onArticleReady(article);

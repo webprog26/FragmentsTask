@@ -14,5 +14,5 @@ public interface ItemDeletingListener {
      * @param article {@link Article}
      * @param adapterPosition int
      */
-    public void deleteItem(boolean isDeleted, Article article, final int adapterPosition);
+     void deleteItem(boolean isDeleted, Article article, final int adapterPosition);
 }

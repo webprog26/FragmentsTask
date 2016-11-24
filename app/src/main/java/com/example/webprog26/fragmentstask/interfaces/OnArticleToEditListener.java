@@ -17,5 +17,5 @@ public interface OnArticleToEditListener {
      * which loads editable {@link Article} from database by received id
      * @param article
      */
-    public void onEditArticle(Article article);
+    void onEditArticle(Article article);
 }

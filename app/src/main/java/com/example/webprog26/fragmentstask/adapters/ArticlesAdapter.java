@@ -29,7 +29,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.Articl
 
     private static final String TAG = "ArticlesAdapter";
 
-    public class ArticlesViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder{
+    class ArticlesViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder{
 
         @SuppressWarnings("deprecation")
         @Override
@@ -45,12 +45,12 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.Articl
 
         private TextView mTvArticleTitle;
 
-        public ArticlesViewHolder(View itemView) {
+        ArticlesViewHolder(View itemView) {
             super(itemView);
             mTvArticleTitle = (TextView) itemView.findViewById(R.id.tvArticleTitle);
         }
 
-        public void bind(final Article article, final OnArticleListClickListener listener){
+        void bind(final Article article, final OnArticleListClickListener listener){
 
             mTvArticleTitle.setText(article.getArticleTitle());
 
@@ -180,7 +180,6 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.Articl
             @Override
             public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
                 super.clearView(recyclerView, viewHolder);
-//                viewHolder.itemView.setAlpha(1.0F);
                 if (viewHolder instanceof ItemTouchHelperViewHolder) {
                     ItemTouchHelperViewHolder itemTouchHelperViewHolder = (ItemTouchHelperViewHolder) viewHolder;
                     itemTouchHelperViewHolder.onItemClear();
@@ -191,7 +190,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.Articl
         itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
-    public boolean onItemMove(int fromPosition, int toPosition) {
+    private boolean onItemMove(int fromPosition, int toPosition) {
         if(fromPosition < toPosition){
             for(int i = fromPosition; i < toPosition; i++){
                 Collections.swap(mArticleList, i, i + 1);

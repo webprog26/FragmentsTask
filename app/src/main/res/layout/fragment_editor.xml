@@ -10,8 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/etTitle"
-        android:inputType="text"
-        android:lines="1"
+        android:minLines="2"
         android:layout_alignParentTop="true"
         android:background="@drawable/et_background"/>
         <EditText

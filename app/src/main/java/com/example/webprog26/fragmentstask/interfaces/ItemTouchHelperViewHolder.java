@@ -9,10 +9,10 @@ public interface ItemTouchHelperViewHolder {
    /**
     * Implemented by adapter's ViewHolder. Changes background of selected list item to selected
     */
-   public void onItemSelected();
+   void onItemSelected();
 
     /**
      * Implemented by adapter's ViewHolder. Changes background of selected list item to unselected
      */
-   public void onItemClear();
+   void onItemClear();
 }

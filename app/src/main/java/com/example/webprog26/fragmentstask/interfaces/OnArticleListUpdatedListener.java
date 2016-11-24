@@ -12,5 +12,5 @@ public interface OnArticleListUpdatedListener {
      * calls fragment to update it's UI by updating list with newly-added Article
      * via calling new instance of {@link com.example.webprog26.fragmentstask.fragments.FragmentList.AsyncTitlesLoadingTask} to execute
      */
-    public void onArticleListUpdated();
+    void onArticleListUpdated();
 }
