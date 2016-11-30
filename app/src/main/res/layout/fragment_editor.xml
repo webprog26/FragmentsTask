@@ -11,16 +11,23 @@
         android:layout_height="wrap_content"
         android:id="@+id/etTitle"
         android:minLines="2"
+        android:hint="@string/hint_article_title"
         android:layout_alignParentTop="true"
-        android:background="@drawable/et_background"/>
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+        android:background="@drawable/et_background"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"/>
+    <EditText
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
             android:id="@+id/etText"
             android:minLines="4"
-            android:layout_above="@+id/layoutControls"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
-            android:background="@drawable/et_background"/>
+            android:hint="@string/hint_article_text"
+            android:layout_below="@+id/etTitle"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:background="@drawable/et_background"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
