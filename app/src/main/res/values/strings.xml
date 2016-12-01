@@ -4,4 +4,6 @@
     <string name="cancel">Cancel</string>
     <string name="delete_item">Delete item?</string>
     <string name="ok">Ok</string>
+    <string name="hint_article_title">Title</string>
+    <string name="hint_article_text">Text</string>
 </resources>

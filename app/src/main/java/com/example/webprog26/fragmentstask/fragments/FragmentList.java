@@ -19,6 +19,7 @@ import com.example.webprog26.fragmentstask.adapters.ArticlesAdapter;
 import com.example.webprog26.fragmentstask.click_handlers.ButtonOnClickHandler;
 import com.example.webprog26.fragmentstask.interfaces.OnArticleListClickListener;
 import com.example.webprog26.fragmentstask.interfaces.OnArticleToEditListener;
+import com.example.webprog26.fragmentstask.interfaces.OnOrientationChangedListener;
 import com.example.webprog26.fragmentstask.models.Article;
 import com.example.webprog26.fragmentstask.providers.DBProvider;
 import java.util.ArrayList;
@@ -36,8 +37,10 @@ public class FragmentList extends Fragment implements OnArticleListClickListener
     private List<Article> mArticles;
     private ArticlesAdapter mAdapter;
     private RelativeLayout mListContainer;
+    private FloatingActionButton mBtnAdArticle;
 
     private OnArticleToEditListener mOnArticleToEditListener;
+    private OnOrientationChangedListener mOnOrientationChangedListener;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,6 +53,9 @@ public class FragmentList extends Fragment implements OnArticleListClickListener
         super.onAttach(context);
         if(context instanceof OnArticleToEditListener){
             mOnArticleToEditListener = (OnArticleToEditListener) context;
+        }
+        if(context instanceof OnOrientationChangedListener){
+            mOnOrientationChangedListener = (OnOrientationChangedListener) context;
         }
     }
 
@@ -80,8 +86,10 @@ public class FragmentList extends Fragment implements OnArticleListClickListener
         mArticlesRecyclerView.setHasFixedSize(true);
         mArticlesRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        FloatingActionButton btnAdArticle = (FloatingActionButton) view.findViewById(R.id.btnAddArticle);
-        btnAdArticle.setOnClickListener(new ButtonOnClickHandler(getActivity()));
+        mBtnAdArticle = (FloatingActionButton) view.findViewById(R.id.btnAddArticle);
+        mBtnAdArticle.setOnClickListener(new ButtonOnClickHandler(getActivity()));
+
+        changeAddArticleButtonVisibility();
 
         mArticlesRecyclerView.setAdapter(mAdapter);
     }
@@ -99,6 +107,7 @@ public class FragmentList extends Fragment implements OnArticleListClickListener
         super.onDetach();
         //Nulling reference, previously saved in onAttach() to avoid possible memory leaks
         this.mOnArticleToEditListener = null;
+        this.mOnOrientationChangedListener = null;
     }
 
     //This class loads existing Articles from database asynchronously & transfers it
@@ -117,6 +126,14 @@ public class FragmentList extends Fragment implements OnArticleListClickListener
             mArticles = articles;
             mAdapter.updateList(mArticles);
         }
+    }
+
+    private void changeAddArticleButtonVisibility(){
+        if(mOnOrientationChangedListener.isInLandscapeOrientation() && mBtnAdArticle.getVisibility() == View.VISIBLE){
+            mBtnAdArticle.setVisibility(View.GONE);
+            return;
+        }
+        mBtnAdArticle.setVisibility(View.VISIBLE);
     }
 
     /**

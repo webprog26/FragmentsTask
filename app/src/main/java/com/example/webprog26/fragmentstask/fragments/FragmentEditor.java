@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -93,6 +94,9 @@ public class FragmentEditor extends Fragment{
                         .setArticleText(mEtArticleText.getText().toString());
                 final Article article = builder.build();
 
+
+                Log.i(TAG, "Article " + article.getArticleTitle() + ", " + article.getArticleText());
+
                 if(doesActivityImplementsOnArticleReadyToStoreListener()){
                     mArticleReadyToStoreListener.onArticleReady(article);
                 } else{
@@ -107,13 +111,15 @@ public class FragmentEditor extends Fragment{
                                 //Since articleId matches some article, that already exists
                                 //in the database, we're editing this article java.lang.Thread
                                 new ArticleUpdateThread(article, getActivity()).start();
+
                             }
                         }
                     }.onArticleReady(article);
                     mOnArticleListUpdatedListener.onArticleListUpdated();
+                    mEtArticleTitle.setText("");
+                    mEtArticleText.setText("");
                 }
-                mEtArticleTitle.setText("");
-                mEtArticleText.setText("");
+
             }
         });
         Button btnCancel = (Button) view.findViewById(R.id.btnCancel);

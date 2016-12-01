@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import com.example.webprog26.fragmentstask.R;
 import com.example.webprog26.fragmentstask.fragments.FragmentEditor;
+import com.example.webprog26.fragmentstask.fragments.FragmentList;
 
 /**
  * Created by webprog26 on 22.11.2016.
@@ -46,7 +47,7 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
             fragmentManager.beginTransaction().add(R.id.fragmentList, fragment).commit();
         }
 
-        //Orientation is portrait (two-panels GUI). Empty FragmentEditor will be loaded in the same window
+        //Orientation is landscape (two-panels GUI). Empty FragmentEditor will be loaded in the same window
         // as the FragmentList will
         if(findViewById(R.id.fragmentEditor) != null){
             fragmentManager.beginTransaction().add(R.id.fragmentEditor, FragmentEditor.newInstance(FragmentEditor.NEW_ARTICLE)).commit();

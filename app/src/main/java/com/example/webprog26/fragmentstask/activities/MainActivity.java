@@ -9,9 +9,10 @@ import com.example.webprog26.fragmentstask.fragments.FragmentEditor;
 import com.example.webprog26.fragmentstask.fragments.FragmentList;
 import com.example.webprog26.fragmentstask.interfaces.OnArticleListUpdatedListener;
 import com.example.webprog26.fragmentstask.interfaces.OnArticleToEditListener;
+import com.example.webprog26.fragmentstask.interfaces.OnOrientationChangedListener;
 import com.example.webprog26.fragmentstask.models.Article;
 
-public class MainActivity extends SingleFragmentActivity implements OnArticleToEditListener, OnArticleListUpdatedListener {
+public class MainActivity extends SingleFragmentActivity implements OnArticleToEditListener, OnArticleListUpdatedListener, OnOrientationChangedListener {
 
     private static final String TAG = "MainActivity_TAG";
 
@@ -58,5 +59,10 @@ public class MainActivity extends SingleFragmentActivity implements OnArticleToE
     public void onArticleListUpdated() {
         FragmentList fragmentList = (FragmentList) getSupportFragmentManager().findFragmentById(R.id.fragmentList);
         fragmentList.updateUI();
+    }
+
+    @Override
+    public boolean isInLandscapeOrientation() {
+        return findViewById(R.id.fragmentEditor) != null;
     }
 }
